@@ -53,16 +53,23 @@ function RootLayoutNav() {
     const colorScheme = useColorScheme();
 
     return (
-        <ThemeProvider
-            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
+        // <ThemeProvider
+        // value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        // >
+        <ThemeProvider value={DarkTheme}>
             <Stack>
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                <Stack.Screen
-                    name="modal"
-                    options={{ presentation: "modal" }}
-                />
                 <Stack.Screen name="login" options={{ headerShown: false }} />
+                <Stack.Screen
+                    name="editNote/[id]/index"
+                    options={({ route }: { route: any }) => ({
+                        title:
+                            route.params?.id === "new"
+                                ? "New Note"
+                                : "Edit Note",
+                        headerShown: true, // To show the header with the custom title
+                    })}
+                />
             </Stack>
         </ThemeProvider>
     );
