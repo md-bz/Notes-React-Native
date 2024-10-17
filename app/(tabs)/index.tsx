@@ -7,12 +7,14 @@ import Colors from "@/constants/Colors";
 import { Text, View } from "@/components/Themed";
 import { FontAwesome } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { apiFetch } from "@/lib/api";
 
 export type Note = {
     _id: string;
     title: string;
     content: string;
 };
+
 const numColumns = Math.min(
     6,
     Math.floor(Dimensions.get("window").width / 180)
@@ -20,7 +22,6 @@ const numColumns = Math.min(
 
 export default function Home() {
     const router = useRouter();
-    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
     const [token, setToken] = useState<undefined | string>(undefined);
     const [notes, setNotes] = useState<Note[] | undefined>(undefined);
@@ -33,14 +34,10 @@ export default function Home() {
     }
 
     const getNotes = async () => {
-        const res = await fetch(`${apiUrl}notes`, {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        const resJson = await res.json();
-        setNotes(resJson);
+        if (!token) return;
+        const { response } = await apiFetch({ url: "notes", token, router });
+
+        setNotes(response);
     };
 
     useEffect(() => {
@@ -49,9 +46,7 @@ export default function Home() {
 
     useFocusEffect(
         useCallback(() => {
-            if (token) {
-                getNotes();
-            }
+            getNotes();
         }, [token])
     );
 

@@ -1,5 +1,6 @@
 import { Note } from "@/app/(tabs)";
 import { Text, View } from "@/components/Themed";
+import { apiFetch } from "@/lib/api";
 import Colors from "@/constants/Colors";
 import { FontAwesome } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -10,7 +11,7 @@ import { Pressable, StyleSheet, TextInput } from "react-native";
 export default function editNote() {
     const router = useRouter();
     const { id } = useLocalSearchParams();
-
+    const isNew = id === "new";
     const [content, setContent] = useState("");
     const [title, setTitle] = useState("");
     const [token, setToken] = useState("");
@@ -22,16 +23,14 @@ export default function editNote() {
     }
 
     const getNote = async () => {
-        if (id === "new") return;
-        const res = await fetch(`${apiUrl}notes/${id}`, {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
+        if (!token) return;
+        const { response } = await apiFetch({
+            url: `notes/${id}`,
+            token,
+            router,
         });
-        const resJson: Note = await res.json();
-        setContent(resJson.content);
-        setTitle(resJson.title);
+        setContent(response.content);
+        setTitle(response.title);
     };
 
     useEffect(() => {
@@ -39,57 +38,35 @@ export default function editNote() {
     }, []);
 
     useEffect(() => {
-        if (token) {
-            getNote();
-        }
+        getNote();
     }, [token]);
 
     const handleSubmit = async () => {
-        let url, method;
-        if (id === "new") {
-            url = `${apiUrl}notes/`;
-            method = "POST";
-        } else {
-            url = `${apiUrl}notes/${id}`;
-            method = "PATCH";
-        }
-
-        const res = await fetch(url, {
-            method,
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-                content,
-                title,
-            }),
+        const { success } = await apiFetch({
+            url: isNew ? "notes" : `notes/${id}`,
+            method: isNew ? "POST" : "PATCH",
+            token,
+            body: { content, title },
+            router,
         });
 
-        if (res.status === 200 || res.status === 201) {
+        if (success) {
             router.back();
         }
-
-        const resJson = await res.json();
     };
+
     const handleDelete = async () => {
-        const res = await fetch(`${apiUrl}notes/${id}`, {
+        if (isNew) return;
+        const { success } = await apiFetch({
+            url: `notes/${id}`,
             method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-                content,
-                title,
-            }),
+            token,
+            router,
         });
 
-        if (res.status === 200 || res.status === 201) {
+        if (success) {
             router.back();
         }
-
-        const resJson = await res.json();
     };
 
     return (

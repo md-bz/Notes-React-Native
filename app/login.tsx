@@ -1,42 +1,40 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, StyleSheet, TextInput } from "react-native";
 import * as SecureStore from "expo-secure-store";
 
 import { Text, View } from "@/components/Themed";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { apiFetch } from "@/lib/api";
 
 export default function login() {
     const router = useRouter();
-    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showMessage, setShowMessage] = useState(false);
 
     const handleSubmit = async () => {
-        const res = await fetch(`${apiUrl}auth/login`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                email,
-                password,
-            }),
+        setShowMessage(false);
+        const { success, response, status } = await apiFetch({
+            url: "auth/login",
+            body: { email, password },
         });
 
-        const resJson = await res.json();
-        console.log(resJson);
-
-        if (res.status === 201) {
+        if (success) {
             // await SecureStore.setItemAsync("jwt", resJson.jwt);
-            await AsyncStorage.setItem("jwt", resJson.jwt);
+            await AsyncStorage.setItem("jwt", response.jwt);
             return router.replace("/");
         }
+        if (status === 401) setShowMessage(true);
     };
 
     return (
         <View style={styles.container}>
+            <Text style={{ display: showMessage ? "flex" : "none" }}>
+                {" "}
+                Email or Password is wrong
+            </Text>
             <Text>Email:</Text>
             <TextInput
                 style={styles.input}
