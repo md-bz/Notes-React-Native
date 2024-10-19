@@ -1,12 +1,11 @@
-import { Note } from "@/app/(tabs)";
 import { Text, View } from "@/components/Themed";
 import { apiFetch } from "@/lib/api";
 import Colors from "@/constants/Colors";
 import { FontAwesome } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, TextInput } from "react-native";
+import { getJwt } from "@/lib/jwt";
 
 export default function editNote() {
     const router = useRouter();
@@ -17,7 +16,7 @@ export default function editNote() {
     const [token, setToken] = useState("");
 
     async function handleToken() {
-        const jwt = await AsyncStorage.getItem("jwt");
+        const jwt = await getJwt();
         if (!jwt) return router.replace("/login");
         setToken(jwt);
     }

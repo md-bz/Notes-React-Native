@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, StyleSheet, TextInput } from "react-native";
+import { Button, Platform, StyleSheet, TextInput } from "react-native";
 import * as SecureStore from "expo-secure-store";
 
 import { Text, View } from "@/components/Themed";
@@ -22,10 +22,14 @@ export default function login() {
         });
 
         if (success) {
-            // await SecureStore.setItemAsync("jwt", resJson.jwt);
-            await AsyncStorage.setItem("jwt", response.jwt);
+            if (Platform.OS === "web") {
+                await AsyncStorage.setItem("jwt", response.jwt);
+            } else {
+                await SecureStore.setItemAsync("jwt", response.jwt);
+            }
             return router.replace("/");
         }
+
         if (status === 401) setShowMessage(true);
     };
 
