@@ -1,13 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
-import { Dimensions, FlatList, StyleSheet } from "react-native";
+import {
+    Dimensions,
+    FlatList,
+    StyleSheet,
+    TouchableOpacity,
+} from "react-native";
 import { Link, useFocusEffect, useRouter } from "expo-router";
-import * as SecureStore from "expo-secure-store";
 
 import Colors from "@/constants/Colors";
 import { Text, View } from "@/components/Themed";
 import { FontAwesome } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { apiFetch } from "@/lib/api";
+import { getJwt } from "@/lib/jwt";
 
 export type Note = {
     _id: string;
@@ -27,8 +31,7 @@ export default function Home() {
     const [notes, setNotes] = useState<Note[] | undefined>(undefined);
 
     async function handleToken() {
-        const jwt = await AsyncStorage.getItem("jwt");
-
+        const jwt = await getJwt();
         if (!jwt) return router.replace("/login");
         setToken(jwt);
     }
@@ -65,31 +68,29 @@ export default function Home() {
                 style={styles.list}
                 numColumns={numColumns}
             />
-            <View style={styles.plusIcon}>
+            <TouchableOpacity style={styles.plusIcon}>
                 <Link href="/editNote/new">
                     <FontAwesome name="plus-circle" size={35} color={"white"} />
                 </Link>
-            </View>
+            </TouchableOpacity>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     plusIcon: {
-        flex: 1 / 15,
-        alignItems: "center",
-        width: "100%",
-        // height: 5,
+        position: "absolute",
+        bottom: 10,
+        backgroundColor: "transparent",
+        alignSelf: "center",
     },
     list: {
-        flex: 14 / 15,
-        overflow: "scroll",
+        flex: 1,
     },
     container: {
         flex: 1,
-        alignItems: "flex-start",
-        justifyContent: "flex-start",
-        gap: 5,
+        alignItems: "center",
+        justifyContent: "space-between",
     },
     card: {
         backgroundColor: Colors["dark"]["secondary"],
