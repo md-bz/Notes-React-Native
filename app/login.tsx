@@ -1,11 +1,17 @@
 import { useState } from "react";
-import { Button, Platform, StyleSheet, TextInput } from "react-native";
+import {
+    Platform,
+    StyleSheet,
+    TextInput,
+    TouchableOpacity,
+} from "react-native";
 import * as SecureStore from "expo-secure-store";
 
 import { Text, View } from "@/components/Themed";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { apiFetch } from "@/lib/api";
+import Colors from "@/constants/Colors";
 
 export default function login() {
     const router = useRouter();
@@ -35,39 +41,55 @@ export default function login() {
 
     return (
         <View style={styles.container}>
-            <Text style={{ display: showMessage ? "flex" : "none" }}>
-                {" "}
-                Email or Password is wrong
-            </Text>
-            <Text>Email:</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={setEmail}
-                value={email}
-            />
-            <Text>Password:</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={setPassword}
-                value={password}
-            />
+            <View style={styles.loginCard}>
+                <Text style={{ display: showMessage ? "flex" : "none" }}>
+                    Email or Password is wrong
+                </Text>
+                <Text>Email</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setEmail}
+                    value={email}
+                />
+                <Text>Password</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setPassword}
+                    value={password}
+                />
 
-            <Button title="Submit" onPress={handleSubmit} />
+                <TouchableOpacity onPress={handleSubmit} style={styles.button}>
+                    Login
+                </TouchableOpacity>
+            </View>
         </View>
     );
 }
-
 const styles = StyleSheet.create({
+    loginCard: {
+        backgroundColor: Colors["dark"]["secondary"],
+        borderRadius: 5,
+        padding: 50,
+        display: "flex",
+        alignItems: "center",
+    },
     container: {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#558",
         color: "white",
     },
     input: {
-        width: "80%",
-        margin: 5,
+        padding: 2,
+        marginTop: 7,
+        marginBottom: 20,
+        borderRadius: 2,
         backgroundColor: "grey",
+    },
+    button: {
+        backgroundColor: Colors.dark.accent,
+        padding: 5,
+        borderRadius: 2,
+        borderColor: Colors.dark.accent,
     },
 });

@@ -23,6 +23,7 @@ export default {
         background: "#151515",
         secondary: "#44444422",
         // secondary: "#1b193bcc",
+        accent: "#2a3948",
         tint: tintColorDark,
         tabIconDefault: "#ccc",
         tabIconSelected: tintColorDark,

@@ -4,7 +4,7 @@ import Colors from "@/constants/Colors";
 import { FontAwesome } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Pressable, StyleSheet, TextInput } from "react-native";
+import { StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import { getJwt } from "@/lib/jwt";
 
 export default function editNote() {
@@ -73,13 +73,13 @@ export default function editNote() {
             <View style={styles.form}>
                 <View style={styles.titleContainer}>
                     <Text style={styles.titleText}>Title:</Text>
-                    <Pressable onPress={handleDelete}>
+                    <TouchableOpacity onPress={handleDelete}>
                         <FontAwesome
                             name="trash"
                             style={styles.trashIcon}
                             size={24}
                         />
-                    </Pressable>
+                    </TouchableOpacity>
                 </View>
                 <TextInput
                     style={styles.titleInput}
@@ -94,10 +94,21 @@ export default function editNote() {
                     value={content}
                 />
             </View>
-            <Pressable style={styles.button} onPress={handleSubmit}>
-                <FontAwesome name="bookmark" size={24} color="#007bff" />
-                <Text style={{ color: "#007bff", paddingTop: 2 }}>Save</Text>
-            </Pressable>
+            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+                <FontAwesome
+                    name="bookmark"
+                    size={24}
+                    color="#007bff"
+                    style={{ padding: 5 }}
+                />
+                <Text
+                    style={{
+                        color: "#007bff",
+                    }}
+                >
+                    Save
+                </Text>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -144,10 +155,11 @@ const styles = StyleSheet.create({
         color: "white",
     },
     form: {
-        flex: 17 / 18,
+        flex: 1,
     },
     button: {
-        flex: 1 / 18,
-        alignItems: "center",
+        bottom: 20,
+        position: "absolute",
+        alignSelf: "center",
     },
 });
