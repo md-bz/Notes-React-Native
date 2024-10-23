@@ -7,8 +7,10 @@ type ApiFetchType = {
     url?: string;
     headers?: {};
     body?: {
+        name?: string;
         email?: string;
         password?: string;
+        passwordConfirm?: string;
         title?: string;
         content?: string;
     };

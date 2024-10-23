@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/components/useColorScheme";
+import { SafeAreaView } from "react-native";
 
 export {
     // Catch any errors thrown by the Layout component.
@@ -60,6 +61,7 @@ function RootLayoutNav() {
             <Stack>
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                 <Stack.Screen name="login" options={{ headerShown: false }} />
+                <Stack.Screen name="signup" options={{ headerShown: false }} />
                 <Stack.Screen
                     name="editNote/[id]/index"
                     options={({ route }: { route: any }) => ({

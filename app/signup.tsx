@@ -13,18 +13,21 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { apiFetch } from "@/lib/api";
 import Colors from "@/constants/Colors";
 
-export default function login() {
+export default function signup() {
     const router = useRouter();
 
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [showMessage, setShowMessage] = useState(false);
+    const [passwordConfirm, setPasswordConfirm] = useState("");
+    const [message, setMessage] = useState<undefined | string[]>(undefined);
 
     const handleSubmit = async () => {
-        setShowMessage(false);
+        setMessage(undefined);
+
         const { success, response, status } = await apiFetch({
-            url: "auth/login",
-            body: { email, password },
+            url: "auth/signup",
+            body: { name, email, password, passwordConfirm },
         });
 
         if (success) {
@@ -36,15 +39,22 @@ export default function login() {
             return router.replace("/");
         }
 
-        if (status === 401) setShowMessage(true);
+        setMessage(response.message);
     };
 
     return (
         <View style={styles.container}>
             <View style={styles.loginCard}>
-                <Text style={{ display: showMessage ? "flex" : "none" }}>
-                    Email or Password is wrong
+                <Text style={{ display: message ? "flex" : "none" }}>
+                    {message}
                 </Text>
+                <Text>Name</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setName}
+                    value={name}
+                />
+
                 <Text>Email</Text>
                 <TextInput
                     style={styles.input}
@@ -57,13 +67,19 @@ export default function login() {
                     onChangeText={setPassword}
                     value={password}
                 />
+                <Text>Password Confirm</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setPasswordConfirm}
+                    value={passwordConfirm}
+                />
 
                 <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-                    <Text>Login</Text>
+                    Login
                 </TouchableOpacity>
             </View>
-            <Link href={"/signup"} style={styles.link}>
-                <Text>Don't have an account? signup</Text>
+            <Link href={"/login"} style={styles.link}>
+                <Text>Already have an account? login</Text>
             </Link>
         </View>
     );
@@ -73,7 +89,6 @@ const styles = StyleSheet.create({
         backgroundColor: Colors["dark"]["secondary"],
         borderRadius: 5,
         padding: 50,
-        width: "100%",
         display: "flex",
         alignItems: "center",
     },
@@ -83,17 +98,16 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         color: "white",
     },
+    link: {
+        marginTop: 15,
+        color: "blue",
+    },
     input: {
-        width: "80%",
         padding: 2,
         marginTop: 7,
         marginBottom: 20,
         borderRadius: 2,
         backgroundColor: "grey",
-    },
-    link: {
-        marginTop: 15,
-        color: "blue",
     },
     button: {
         backgroundColor: Colors.dark.accent,
