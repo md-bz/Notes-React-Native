@@ -4,7 +4,12 @@ import Colors from "@/constants/Colors";
 import { FontAwesome } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import {
+    SafeAreaView,
+    StyleSheet,
+    TextInput,
+    TouchableOpacity,
+} from "react-native";
 import { getJwt } from "@/lib/jwt";
 
 export default function editNote() {
@@ -69,7 +74,7 @@ export default function editNote() {
     };
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <View style={styles.form}>
                 <View style={styles.titleContainer}>
                     <Text style={styles.titleText}>Title:</Text>
@@ -109,7 +114,7 @@ export default function editNote() {
                     Save
                 </Text>
             </TouchableOpacity>
-        </View>
+        </SafeAreaView>
     );
 }
 
@@ -124,6 +129,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-between",
         marginBottom: 10,
+        backgroundColor: "none",
     },
     titleText: {
         fontSize: 22,
@@ -135,7 +141,7 @@ const styles = StyleSheet.create({
     },
     titleInput: {
         borderWidth: 0, // No border for modern look
-        backgroundColor: "10", // White background for input
+        backgroundColor: "none",
         color: Colors["dark"]["text"],
         borderRadius: 5,
         paddingHorizontal: 15,
@@ -148,14 +154,14 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     input: {
-        height: "80%", // Height for multiline input
-        // borderRadius: 5,
+        // height: "100%", // Height for multiline input
         borderWidth: 0,
         padding: 15,
         color: "white",
     },
     form: {
         flex: 1,
+        backgroundColor: "none",
     },
     button: {
         bottom: 20,

@@ -12,13 +12,11 @@ import { Text, View } from "@/components/Themed";
 import { FontAwesome } from "@expo/vector-icons";
 import { apiFetch } from "@/lib/api";
 import { getJwt } from "@/lib/jwt";
-
 export type Note = {
     _id: string;
     title: string;
     content: string;
 };
-
 const numColumns = Math.min(
     6,
     Math.floor(Dimensions.get("window").width / 180)
@@ -54,9 +52,11 @@ export default function Home() {
     );
 
     const renderItem = ({ item }: { item: Note }) => (
-        <Link href={`/editNote/${item._id}`} style={styles.card}>
-            <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.text}>{item.content}</Text>
+        <Link href={`/editNote/${item._id}`} style={styles.cardContainer}>
+            <View style={styles.card}>
+                <Text style={styles.title}>{item.title}</Text>
+                <Text style={styles.text}>{item.content}</Text>
+            </View>
         </Link>
     );
     return (
@@ -86,27 +86,36 @@ const styles = StyleSheet.create({
     },
     list: {
         flex: 1,
+        width: "100%",
     },
     container: {
         flex: 1,
+        width: "100%",
         alignItems: "center",
         justifyContent: "space-between",
     },
     card: {
+        width: 180,
         backgroundColor: Colors["dark"]["secondary"],
         height: 100,
         flex: 1 / numColumns,
         overflow: "hidden",
-        margin: 10,
         padding: 10,
+    },
+    cardContainer: {
+        margin: 10,
     },
     title: {
         display: "flex",
         fontSize: 22,
+
         fontWeight: "bold",
         marginBottom: 10,
     },
     text: {
+        display: "flex",
+
+        overflow: "hidden",
         fontSize: 20,
     },
     separator: {

@@ -21,7 +21,7 @@ export default {
     dark: {
         text: "#fff",
         background: "#151515",
-        secondary: "#44444422",
+        secondary: "#222",
         // secondary: "#1b193bcc",
         accent: "#2a3948",
         tint: tintColorDark,
