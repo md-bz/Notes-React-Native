@@ -4,12 +4,7 @@ import Colors from "@/constants/Colors";
 import { FontAwesome } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import {
-    SafeAreaView,
-    StyleSheet,
-    TextInput,
-    TouchableOpacity,
-} from "react-native";
+import { StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import { getJwt } from "@/lib/jwt";
 
 export default function editNote() {
@@ -74,7 +69,7 @@ export default function editNote() {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.form}>
                 <View style={styles.titleContainer}>
                     <Text style={styles.titleText}>Title:</Text>
@@ -114,7 +109,7 @@ export default function editNote() {
                     Save
                 </Text>
             </TouchableOpacity>
-        </SafeAreaView>
+        </View>
     );
 }
 
@@ -122,7 +117,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: Colors["dark"]["background"], // Light gray background
+        backgroundColor: Colors["dark"]["background"],
     },
     titleContainer: {
         flexDirection: "row",
@@ -134,13 +129,13 @@ const styles = StyleSheet.create({
     titleText: {
         fontSize: 22,
         fontWeight: "bold",
-        color: Colors["dark"]["text"], // Dark text for contrast
+        color: Colors["dark"]["text"],
     },
     trashIcon: {
         color: "#ff4d4d", // Red color for the trash icon
     },
     titleInput: {
-        borderWidth: 0, // No border for modern look
+        borderWidth: 0,
         backgroundColor: "none",
         color: Colors["dark"]["text"],
         borderRadius: 5,
@@ -154,7 +149,6 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     input: {
-        // height: "100%", // Height for multiline input
         borderWidth: 0,
         padding: 15,
         color: "white",

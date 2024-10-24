@@ -70,8 +70,6 @@ export default function login() {
 }
 const styles = StyleSheet.create({
     loginCard: {
-        backgroundColor: Colors["dark"]["secondary"],
-        borderRadius: 5,
         padding: 50,
         width: "100%",
         display: "flex",

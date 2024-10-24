@@ -75,7 +75,7 @@ export default function signup() {
                 />
 
                 <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-                    Login
+                    <Text>SignUp</Text>
                 </TouchableOpacity>
             </View>
             <Link href={"/login"} style={styles.link}>
@@ -86,11 +86,11 @@ export default function signup() {
 }
 const styles = StyleSheet.create({
     loginCard: {
-        backgroundColor: Colors["dark"]["secondary"],
         borderRadius: 5,
         padding: 50,
         display: "flex",
         alignItems: "center",
+        width: "100%",
     },
     container: {
         flex: 1,
@@ -103,8 +103,10 @@ const styles = StyleSheet.create({
         color: "blue",
     },
     input: {
+        width: "80%",
         padding: 2,
         marginTop: 7,
+
         marginBottom: 20,
         borderRadius: 2,
         backgroundColor: "grey",
