@@ -40,3 +40,16 @@ export async function setJwt(jwt: string): Promise<void> {
         console.error("Error setting JWT:", error);
     }
 }
+export async function deleteJwt(): Promise<void> {
+    try {
+        if (Platform.OS === "web") {
+            const AsyncStorage = await getAsyncStorage();
+            await AsyncStorage.removeItem("jwt");
+        } else {
+            const SecureStore = await getSecureStore();
+            await SecureStore.deleteItemAsync("jwt");
+        }
+    } catch (error) {
+        console.error("Error setting JWT:", error);
+    }
+}
