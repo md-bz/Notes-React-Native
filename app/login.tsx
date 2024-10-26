@@ -25,6 +25,7 @@ export default function login() {
         const { success, response, status } = await apiFetch({
             url: "auth/login",
             body: { email, password },
+            router,
         });
 
         if (success) {

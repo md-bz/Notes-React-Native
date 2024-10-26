@@ -28,6 +28,7 @@ export default function signup() {
         const { success, response, status } = await apiFetch({
             url: "auth/signup",
             body: { name, email, password, passwordConfirm },
+            router,
         });
 
         if (success) {

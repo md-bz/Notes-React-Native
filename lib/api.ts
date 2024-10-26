@@ -15,7 +15,7 @@ type ApiFetchType = {
         content?: string;
     };
     token?: string;
-    router?: Router;
+    router: Router;
 };
 
 export async function apiFetch({
@@ -33,14 +33,24 @@ export async function apiFetch({
         headers = { ...headers, Authorization: `Bearer ${token}` };
     }
 
-    const res = await fetch(`${apiUrl}${url}`, {
-        method,
-        headers: {
-            "Content-Type": "application/json",
-            ...headers,
-        },
-        body: body ? JSON.stringify(body) : null,
-    });
+    let res;
+    try {
+        res = await fetch(`${apiUrl}${url}`, {
+            method,
+            headers: {
+                "Content-Type": "application/json",
+                ...headers,
+            },
+            body: body ? JSON.stringify(body) : null,
+        });
+    } catch (error) {
+        router.push("/network-error");
+        return {
+            success: false,
+            response: {},
+            status: res?.status,
+        };
+    }
 
     if (res.status == 401 && router) {
         await AsyncStorage.removeItem("jwt");

@@ -90,10 +90,17 @@ function RootLayoutNav() {
                             route.params?.id === "new"
                                 ? "New Note"
                                 : "Edit Note",
-                        headerShown: true, // To show the header with the custom title
+                        headerShown: true,
                     })}
                 />
                 <Stack.Screen name="settings" />
+                <Stack.Screen
+                    name="network-error"
+                    options={{
+                        presentation: "modal",
+                        headerShown: false,
+                    }}
+                />
             </Stack>
         </ThemeProvider>
     );
